@@ -1,0 +1,1 @@
+# Stomatologiya Klinika Management System

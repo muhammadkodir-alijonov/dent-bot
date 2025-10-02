@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{% block title %}Stomatologiya Klinikasi{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="{{ base_url }}/static/css/style.css" rel="stylesheet">
+    
+    <!-- Telegram Web App Script -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Meta tags -->
+    <meta http-equiv="ngrok-skip-browser-warning" content="true">
+    <meta name="description" content="{% block description %}Professional stomatologiya xizmatlari - plomba, karonka, implant va boshqa tish davolash xizmatlari{% endblock %}">
+    <meta name="keywords" content="stomatologiya, tish davolash, plomba, karonka, implant, ortodontiya">
+    <meta name="author" content="Stomatologiya Klinikasi">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% block og_title %}Stomatologiya Klinikasi{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Professional stomatologiya xizmatlari{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{{ base_url }}/static/images/logo.png">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-tooth me-2"></i>
+                Stomatologiya
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>
+                            Bosh sahifa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">
+                            <i class="fas fa-concierge-bell me-1"></i>
+                            Xizmatlar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">
+                            <i class="fas fa-phone me-1"></i>
+                            Aloqa
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Social Links Footer -->
+    <footer class="social-links" id="contact">
+        <div class="container">
+            <h5><i class="fas fa-share-alt me-2"></i>Bizning ijtimoiy tarmoqlar</h5>
+            <div class="text-center">
+                <a href="https://t.me/stomatologiya_klinikasi" class="social-link" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://instagram.com/stomatolog_j" class="social-link" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://facebook.com/jahongir_stom" class="social-link" target="_blank">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="tel:+998994928385" class="social-link">
+                    <i class="fas fa-phone"></i>
+                </a>
+                <a href="https://maps.app.goo.gl/PXf3WKvqqwngj4PA6" class="social-link" target="_blank">
+                    <i class="fas fa-map-marker-alt"></i>
+                </a>
+            </div>
+            <div class="text-center mt-3">
+                <small class="text-light">
+                    <i class="fas fa-copyright me-1"></i>
+                    2025 Stomatologiya Klinikasi. Barcha huquqlar himoyalangan.
+                </small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ base_url }}/static/js/main.js"></script>
+    
+    {% block extra_scripts %}{% endblock %}
+    
+    <!-- Telegram Web App Integration -->
+    <script>
+        // Telegram Web App theme adaptation
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            
+            // Apply Telegram theme
+            if (tg.themeParams.bg_color) {
+                document.documentElement.style.setProperty('--tg-bg-color', tg.themeParams.bg_color);
+            }
+            if (tg.themeParams.text_color) {
+                document.documentElement.style.setProperty('--tg-text-color', tg.themeParams.text_color);
+            }
+            
+            // Expand to full height
+            tg.expand();
+            tg.ready();
+        }
+    </script>
+</body>
+</html>

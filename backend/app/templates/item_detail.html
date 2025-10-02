@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.name }} - Stomatologiya Klinikasi{% endblock %}
+
+{% block description %}{{ item.description[:150] }}{% endblock %}
+
+{% block og_title %}{{ item.name }} - {{ "{:,}".format(item.price).replace(",", " ") }} So'm{% endblock %}
+{% block og_description %}{{ item.description[:150] }}{% endblock %}
+
+{% block extra_head %}
+<meta name="item-id" content="{{ item.id }}">
+<meta name="item-name" content="{{ item.name }}">
+<meta name="item-price" content="{{ item.price }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3">
+    <!-- Breadcrumb -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/" class="text-decoration-none">
+                            <i class="fas fa-home me-1"></i>Bosh sahifa
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/category/{{ item.category.id }}" class="text-decoration-none">
+                            {{ item.category.name }}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {{ item.name }}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="detail-container">
+                <div class="row">
+                    <!-- Image Section -->
+                    <div class="col-lg-6 mb-4">
+                        {% if item.image_url %}
+                            <img src="{{ base_url }}{{ item.image_url }}" class="detail-image img-fluid" alt="{{ item.name }}">
+                        {% else %}
+                            <div class="detail-image bg-gradient d-flex align-items-center justify-content-center" 
+                                 style="background: linear-gradient(135deg, #2c5aa0, #17a2b8);">
+                                <i class="text-white" style="font-size: 120px;">
+                                    {% if item.category.name == 'Plomba' %}
+                                        <i class="fas fa-tooth"></i>
+                                    {% elif item.category.name == 'Karonka' %}
+                                        <i class="fas fa-crown"></i>
+                                    {% elif item.category.name == 'Implant' %}
+                                        <i class="fas fa-plus-circle"></i>
+                                    {% elif item.category.name == 'Ortodontiya' %}
+                                        <i class="fas fa-smile"></i>
+                                    {% else %}
+                                        <i class="fas fa-stethoscope"></i>
+                                    {% endif %}
+                                </i>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Details Section -->
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <span class="badge bg-primary fs-6 mb-3">
+                                {% if item.category.name == 'Plomba' %}
+                                    <i class="fas fa-tooth me-2"></i>
+                                {% elif item.category.name == 'Karonka' %}
+                                    <i class="fas fa-crown me-2"></i>
+                                {% elif item.category.name == 'Implant' %}
+                                    <i class="fas fa-plus-circle me-2"></i>
+                                {% elif item.category.name == 'Ortodontiya' %}
+                                    <i class="fas fa-smile me-2"></i>
+                                {% else %}
+                                    <i class="fas fa-stethoscope me-2"></i>
+                                {% endif %}
+                                {{ item.category.name }}
+                            </span>
+                        </div>
+
+                        <h1 class="detail-title">{{ item.name }}</h1>
+                        
+                        <div class="detail-price mb-4">
+                            <i class="fas fa-tag me-2"></i>{{ "{:,}".format(item.price).replace(",", " ") }} So'm
+                        </div>
+
+                        <!-- Quick Info Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-primary">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-clock text-primary fa-2x mb-2"></i>
+                                        <h6>Davomiylik</h6>
+                                        <strong>{{ item.duration }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-success">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-calendar-alt text-success fa-2x mb-2"></i>
+                                        <h6>Seanslar soni</h6>
+                                        <strong>{{ item.min_sessions }} - {{ item.max_sessions }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-3 mb-4">
+                            <a href="tel:+998901234567" class="btn btn-success btn-lg">
+                                <i class="fas fa-phone me-2"></i>Qo'ng'iroq qilish
+                            </a>
+                            <a href="https://t.me/your_clinic_bot" class="btn btn-primary btn-lg" target="_blank">
+                                <i class="fab fa-telegram me-2"></i>Telegram orqali yozish
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description Section -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="detail-info">
+                            <h4 class="mb-3">
+                                <i class="fas fa-info-circle me-2"></i>Batafsil ma'lumot
+                            </h4>
+                            <p class="lead">{{ item.description }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-clipboard-list me-2"></i>Xizmat haqida
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-item">
+                                    <span class="info-label">Narx:</span>
+                                    <span class="info-value">{{ "{:,}".format(item.price).replace(",", " ") }} So'm</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Davomiylik:</span>
+                                    <span class="info-value">{{ item.duration }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Minimal seanslar:</span>
+                                    <span class="info-value">{{ item.min_sessions }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Maksimal seanslar:</span>
+                                    <span class="info-value">{{ item.max_sessions }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Kategoriya:</span>
+                                    <span class="info-value">{{ item.category.name }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-question-circle me-2"></i>Savollaringiz bor?
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Bizning mutaxassislar sizga yordam berishga tayyor!</p>
+                                <div class="d-grid gap-2">
+                                    <a href="tel:+998901234567" class="btn btn-outline-success">
+                                        <i class="fas fa-phone me-2"></i>+998 90 123 45 67
+                                    </a>
+                                    <a href="https://t.me/your_clinic" class="btn btn-outline-primary" target="_blank">
+                                        <i class="fab fa-telegram me-2"></i>Telegram kanal
+                                    </a>
+                                    <a href="https://goo.gl/maps/your_location" class="btn btn-outline-dark" target="_blank">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Bizning manzil
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back to Category -->
+                <div class="row mt-5">
+                    <div class="col-12 text-center">
+                        <a href="/category/{{ item.category.id }}" class="btn btn-outline-primary me-3">
+                            <i class="fas fa-arrow-left me-2"></i>{{ item.category.name }} bo'limiga qaytish
+                        </a>
+                        <a href="/" class="btn btn-outline-secondary">
+                            <i class="fas fa-home me-2"></i>Bosh sahifaga qaytish
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Items (Optional) -->
+    <!-- You can add related items section here if needed -->
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Telegram Web App integration
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        
+        // Show back button
+        tg.BackButton.show();
+        tg.BackButton.onClick(function() {
+            history.back();
+        });
+        
+        // Configure main button for booking
+        tg.MainButton.setText('Qo\'ng\'iroq qilish');
+        tg.MainButton.color = '#28a745';
+        tg.MainButton.textColor = '#ffffff';
+        tg.MainButton.show();
+        
+        tg.MainButton.onClick(function() {
+            tg.openLink('tel:+998901234567');
+        });
+        
+        // Send item view event (using meta tags for data)
+        const itemId = document.querySelector('meta[name="item-id"]');
+        const itemName = document.querySelector('meta[name="item-name"]');
+        const itemPrice = document.querySelector('meta[name="item-price"]');
+        
+        if (itemId && itemName && itemPrice) {
+            const eventData = {
+                action: 'view_item',
+                item_id: itemId.content,
+                item_name: itemName.content,
+                item_price: itemPrice.content
+            };
+            tg.sendData(JSON.stringify(eventData));
+        }
+    }
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Image zoom functionality (if needed)
+    const detailImage = document.querySelector('.detail-image');
+    if (detailImage && detailImage.tagName === 'IMG') {
+        detailImage.style.cursor = 'pointer';
+        detailImage.addEventListener('click', function() {
+            // Create modal for image zoom
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ item.name }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="${this.src}" class="img-fluid" alt="{{ item.name }}">
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            const bootstrapModal = new bootstrap.Modal(modal);
+            bootstrapModal.show();
+            
+            modal.addEventListener('hidden.bs.modal', () => {
+                document.body.removeChild(modal);
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
