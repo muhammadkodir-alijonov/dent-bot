@@ -12,14 +12,14 @@ if [ -f .env.prod ]; then
 fi
 
 # Renew certificates
-docker-compose -f docker/docker-compose.prod.yml --profile ssl-renew up certbot-renew
+docker-compose --env-file .env.prod -f docker-compose.prod.yml --profile ssl-renew run --rm certbot-renew
 
 if [ $? -eq 0 ]; then
     echo "✅ SSL certificates renewed successfully"
     
     # Reload nginx to use new certificates
     echo "🔄 Reloading nginx..."
-    docker-compose -f docker/docker-compose.prod.yml exec nginx nginx -s reload
+    docker-compose --env-file .env.prod -f docker-compose.prod.yml exec nginx nginx -s reload
     
     if [ $? -eq 0 ]; then
         echo "✅ Nginx reloaded successfully"

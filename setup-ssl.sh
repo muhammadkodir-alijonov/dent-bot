@@ -1,8 +1,8 @@
 #!/bin/bash
-# SSL Certificate Setup with Let's Encrypt
+# SSL Certificate Setup with Let's Encrypt for Dental Clinic
 
-DOMAIN="muhammadqodir.com"
-EMAIL="admin@muhammadqodir.com"
+DOMAIN="stom.muhammadqodir.com"
+EMAIL="muhammadkodir.alijonov@gmail.com"
 
 echo "🔒 Setting up SSL certificates for $DOMAIN..."
 
@@ -19,20 +19,24 @@ events {
 http {
     server {
         listen 80;
-        server_name $DOMAIN www.$DOMAIN;
+        server_name $DOMAIN;
 
         location /.well-known/acme-challenge/ {
             root /var/www/certbot;
         }
 
         location / {
-            return 301 https://\$host\$request_uri;
+            return 404;
         }
     }
 }
 EOF
 
 echo "📁 Created temporary nginx config..."
+
+# Stop any existing containers on port 80
+echo "🛑 Stopping containers on port 80..."
+docker ps --format "table {{.ID}}\t{{.Ports}}" | grep "0.0.0.0:80" | awk '{print $1}' | xargs -r docker stop || true
 
 # Run nginx with temporary config
 docker run --rm -d \
@@ -54,8 +58,7 @@ docker run --rm \
   --email $EMAIL \
   --agree-tos \
   --no-eff-email \
-  -d $DOMAIN \
-  -d www.$DOMAIN
+  -d $DOMAIN
 
 # Stop temporary nginx
 docker stop nginx-ssl-init

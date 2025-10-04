@@ -76,8 +76,6 @@ services:
       - ./nginx.prod.conf:/etc/nginx/nginx.conf:ro
       - ./backend/app/static:/app/static:ro
       - backend_uploads_prod:/app/uploads:ro
-      - certbot_data:/etc/letsencrypt:ro
-      - certbot_www:/var/www/certbot:ro
       - nginx_logs:/var/log/nginx
     depends_on:
       - backend
