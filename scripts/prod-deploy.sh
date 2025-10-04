@@ -14,8 +14,12 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-# Hozirgi katalogdan ishlash
-echo -e "${BLUE}📁 Hozirgi katalog: $(pwd)${NC}"
+# Asosiy loyiha katalogiga o'tish
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$PROJECT_DIR"
+
+echo -e "${BLUE}📁 Loyiha katalogi: $(pwd)${NC}"
 
 # 1. Barcha Docker konteynerlarni to'xtatish
 echo -e "${YELLOW}🛑 Barcha Docker konteynerlarni to'xtatish...${NC}"
@@ -25,6 +29,8 @@ docker stop $(docker ps -q) 2>/dev/null || true
 if [ ! -f ".env.prod" ]; then
     echo -e "${RED}❌ .env.prod fayli topilmadi!${NC}"
     echo -e "${YELLOW}Avval .env.prod faylini yarating${NC}"
+    echo -e "${BLUE}Hozirgi katalogdagi fayllar:${NC}"
+    ls -la | grep "\.env"
     exit 1
 fi
 
