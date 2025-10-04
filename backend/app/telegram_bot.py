@@ -111,6 +111,24 @@ Quyidagi tugma orqali bizning manzilimizni ko'rishingiz mumkin:
         logging.error(f"Message handler error: {e}")
         await message.answer("Xatolik yuz berdi")
 
+async def get_bot_info():
+    """Bot ma'lumotlarini olish"""
+    if not BOT_TOKEN:
+        return {"available": False, "error": "BOT_TOKEN not found"}
+    
+    try:
+        bot_info = await asyncio.wait_for(bot.get_me(), timeout=10.0)
+        return {
+            "available": True,
+            "id": bot_info.id,
+            "username": bot_info.username,
+            "first_name": bot_info.first_name
+        }
+    except asyncio.TimeoutError:
+        return {"available": False, "error": "Timeout"}
+    except Exception as e:
+        return {"available": False, "error": str(e)}
+
 async def setup_bot():
     """Bot setup function"""
     if not BOT_TOKEN:
