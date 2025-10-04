@@ -1,259 +1,287 @@
-# Stomatologiya Klinikasi - Web App & Telegram Bot
+# 🦷 Stomatologiya Klinika Management System
 
-Professional stomatologiya klinikasi uchun to'liq web aplikatsiya va Telegram bot.
+Professional dental clinic management system with Telegram bot integration and modern web interface.
 
-## 🏗️ Arxitektura
+## ✨ Features
 
-```
-stom/
-├── backend/
-│   ├── app/
-│   │   ├── main.py              # FastAPI asosiy fayl
-│   │   ├── database.py          # Database modellari
-│   │   ├── schemas.py           # Pydantic sxemalari
-│   │   ├── crud.py              # CRUD operatsiyalar
-│   │   ├── telegram_bot.py      # Telegram bot
-│   │   ├── templates/           # HTML sahifalar
-│   │   │   ├── base.html
-│   │   │   ├── index.html
-│   │   │   ├── item_detail.html
-│   │   │   ├── admin_login.html
-│   │   │   └── admin_dashboard.html
-│   │   └── static/
-│   │       ├── css/style.css
-│   │       ├── js/main.js
-│   │       └── images/
-│   ├── requirements.txt
-│   ├── Dockerfile
-│   └── .env
-├── db/
-│   └── init.sql                 # Boshlang'ich ma'lumotlar
-└── docker/
-    ├── docker-compose.yml
-    ├── .env.dev
-    └── .env.prod
-```
+- 📋 Patient management system
+- 📅 Appointment scheduling
+- 🏥 Treatment history tracking
+- 📊 Admin dashboard
+- 🤖 Telegram bot integration
+- 🔐 Secure authentication
+- 📱 Responsive web interface
+- 🔄 Real-time notifications
 
-## 🚀 Xususiyatlar
+## 🛠 Tech Stack
 
-### User Panel
-- 🔍 **Search**: Xizmatlarni qidirish imkoniyati
-- 📂 **Kategoriyalar**: Plomba, Karonka, Implant, Ortodontiya, Profilaktika
-- 📱 **Responsive**: Telegram Web App uchun optimallashtirilgan
-- 🖼️ **Media**: Har bir xizmat uchun rasm va batafsil ma'lumot
-
-### Admin Panel
-- 🔐 **Autentifikatsiya**: Xavfsiz admin kirish
-- ➕ **CRUD**: Kategoriya va xizmatlar boshqaruvi
-- 📊 **Statistika**: Real vaqt hisobot va grafiklar
-- 🖼️ **Media Upload**: Rasmlarni yuklash va boshqarish
-
-### Telegram Bot
-- 🤖 **Web App Launch**: Telegram ichida web app ochish
-- 🔄 **Echo**: Barcha xabarlarni takrorlash
-- 📲 **Deep Linking**: To'g'ridan-to'g'ri xizmatlarga yo'naltirish
-
-## 🛠️ Texnologiyalar
-
-- **Backend**: FastAPI + Python 3.11
+- **Backend**: FastAPI (Python 3.11)
 - **Database**: PostgreSQL 15
-- **Frontend**: HTML5 + Bootstrap 5 + JavaScript
-- **Bot**: aiogram 3.2
-- **Container**: Docker + Docker Compose
-- **ORM**: SQLAlchemy
+- **Frontend**: HTML5, CSS3, JavaScript (Tailwind CSS)
+- **Bot**: Aiogram 3.x (Telegram Bot API)
+- **Web Server**: Nginx
+- **Containerization**: Docker & Docker Compose
+- **SSL**: Let's Encrypt (Certbot)
 
-## 📦 O'rnatish
+## 🚀 Quick Start
 
-### 1. Repository clone qilish
-```bash
-git clone <repository-url>
-cd stom
-```
+### Prerequisites
 
-### 2. Environment o'rnatish
-```bash
-# Development uchun
-cp docker/.env.dev docker/.env
+- Docker & Docker Compose
+- Domain name (for production)
+- Telegram Bot Token
+- **Available ports**: 80, 8080, 5433
 
-# Telegram bot tokenini o'rnating
-# .env faylida BOT_TOKEN ni o'zgartiring
-```
+### Development Setup
 
-### 3. Docker bilan ishga tushirish
-```bash
-cd docker
-docker-compose up -d
-```
-
-### 4. Ma'lumotlar bazasini tekshirish
-```bash
-# Konteyner ichiga kirish
-docker exec -it docker_backend_1 bash
-
-# Migration (agar kerak bo'lsa)
-alembic upgrade head
-```
-
-## 🔧 Sozlash
-
-### Telegram Bot Token
-1. [@BotFather](https://t.me/BotFather) ga boring
-2. `/newbot` buyrug'ini yuboring
-3. Bot nomini va username kiriting
-4. Olingan tokenni `.env` fayliga qo'shing
-
-### Web App URL
-1. Bot sozlamalarida Web App URL ni o'rnating:
-   - Development: `http://localhost:8000`
-   - Production: sizning domeningiz
-
-### Admin Hisobi
-Default admin hisobi:
-- **Username**: `jahongir_stom`
-- **Password**: `jahonfir!@#`
-
-⚠️ **Muhim**: Production da parolni o'zgartiring!
-
-## 🌐 Foydalanish
-
-### Web Panel
-- Bosh sahifa: `http://localhost:8000`
-- Admin panel: `http://localhost:8000/admin`
-
-### API Endpoints
-- `GET /api/categories` - Kategoriyalar ro'yxati
-- `GET /api/items` - Xizmatlar ro'yxati
-- `GET /api/items/{id}` - Xizmat tafsilotlari
-
-### Telegram Bot
-1. Botingizni ishga tushiring
-2. `/start` buyrug'ini yuboring
-3. "Klinikani ochish" tugmasini bosing
-
-## 📱 Mobile Optimization
-
-Loyiha Telegram Web App uchun optimallashtirilgan:
-- Responsive dizayn
-- Touch-friendly interface
-- Fast loading
-- Minimal bandwidth usage
-
-## 🐳 Docker Commands
+1. **Clone the repository:**
 
 ```bash
-# Loyihani ishga tushirish
-docker-compose up -d
-
-# Loglarni ko'rish
-docker-compose logs -f
-
-# Konteynerlarni to'xtatish
-docker-compose down
-
-# Ma'lumotlar bazasini tozalash
-docker-compose down -v
+git clone https://github.com/muhammadkodir-alijonov/dent-bot.git
+cd dent-bot
 ```
 
-## 📊 Database Schema
+2. **Check port availability (important!):**
 
-### Categories
-- `id` - Primary key
-- `name` - Kategoriya nomi
-- `description` - Tavsif
-- `created_at` - Yaratilgan sana
-
-### Items
-- `id` - Primary key
-- `name` - Xizmat nomi
-- `price` - Narx
-- `description` - Batafsil tavsif
-- `duration` - Davomiylik
-- `min_sessions` - Minimal seanslar
-- `max_sessions` - Maksimal seanslar
-- `image_url` - Rasm URL
-- `category_id` - Kategoriya ID (Foreign Key)
-- `created_at` - Yaratilgan sana
-
-### Admins
-- `id` - Primary key
-- `username` - Foydalanuvchi nomi
-- `hashed_password` - Shifrlangan parol
-- `created_at` - Yaratilgan sana
-
-## 🔒 Xavfsizlik
-
-- Parollar bcrypt bilan shifrlanadi
-- SQL Injection himoyasi (SQLAlchemy ORM)
-- XSS himoyasi (Jinja2 templates)
-- CORS sozlamalari
-- Environment variables orqali sensitive ma'lumotlar
-
-## 🚀 Production Deploy
-
-### 1. Server tayyorlash
 ```bash
-# Docker o'rnatish
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
+# Check if required ports are free
+sudo ss -tlnp | grep -E ":(80|3000|5433)"
 
-# Docker Compose o'rnatish
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+# If any ports are busy, you'll see output like:
+# 0.0.0.0:8080    LISTEN    1234/some-service
+
+# Stop conflicting services or change ports in docker-compose files
 ```
 
-### 2. Environment sozlash
+3. **Setup development environment:**
+
 ```bash
-# Production environment
-cp docker/.env.prod docker/.env
+# Copy development environment file
+cp .env.dev.example .env.dev
 
-# Environment o'zgaruvchilarini o'rnating:
-# - BOT_TOKEN
-# - SECRET_KEY
-# - Database credentials
-# - WEBAPP_URL
+# Edit your development settings (IMPORTANT!)
+nano .env.dev
+
+# Configure these required settings:
+# - POSTGRES_PASSWORD (change from default)
+# - BOT_TOKEN (your Telegram bot token)
+# - SECRET_KEY (32 character secret key)
+# - ADMIN_PASSWORD (change from default)
 ```
 
-### 3. SSL sertifikat
+4. **Start development environment:**
+
+**Linux/Mac:**
+
 ```bash
-# Let's Encrypt bilan
-sudo apt install certbot
-sudo certbot certonly --standalone -d yourdomain.com
+# Make script executable and run
+chmod +x scripts/dev-start.sh
+./scripts/dev-start.sh
 ```
 
-### 4. Nginx konfiguratsiya
-```nginx
-server {
-    listen 80;
-    server_name yourdomain.com;
-    return 301 https://$server_name$request_uri;
-}
+**Windows:**
 
-server {
-    listen 443 ssl;
-    server_name yourdomain.com;
+```cmd
+# Use Windows batch file
+scripts\dev-start.bat
 
-    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
-
-    location / {
-        proxy_pass http://localhost:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-}
+# Or with WSL
+wsl ./scripts/dev-start.sh
 ```
+
+**Manual (any OS):**
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+5. **Access the application:**
+
+- 🌐 Web Interface: http://localhost
+- - ⚙️ Backend API: http://localhost:3000
+- 🗄️ Database: localhost:5433
+
+### Production Deployment
+
+1. **Prepare production environment:**
+
+```bash
+# Copy production environment file
+cp .env.prod.example .env.prod
+
+# Configure your production settings (CRITICAL!)
+nano .env.prod
+
+# MUST CHANGE these settings:
+# - POSTGRES_PASSWORD (strong password)
+# - SECRET_KEY (32 character random string)
+# - BOT_TOKEN (your real Telegram bot token)
+# - ADMIN_PASSWORD (strong admin password)
+# - LETSENCRYPT_EMAIL (your email for SSL)
+```
+
+2. **Important: Update these settings in .env.prod:**
+
+```bash
+POSTGRES_PASSWORD=your_strong_password_here
+SECRET_KEY=your_32_character_secret_key_here
+BOT_TOKEN=your_real_telegram_bot_token
+LETSENCRYPT_EMAIL=your_email@domain.com
+```
+
+3. **Deploy to production:**
+
+**Linux Server:**
+
+```bash
+# Make script executable and run
+chmod +x scripts/prod-deploy.sh
+./scripts/prod-deploy.sh
+```
+
+**Windows Server:**
+
+```cmd
+# Use Windows batch file
+scripts\prod-deploy.bat
+
+# Or with WSL
+wsl ./scripts/prod-deploy.sh
+```
+
+**Manual:**
+
+```bash
+docker-compose -f docker-compose.prod.yml up --build -d
+```
+
+4. **Access production:**
+
+- 🌐 Website: https://stom.muhammadqodir.com
+- 🔧 Admin Panel: https://stom.muhammadqodir.com/admin
+
+## 📁 Project Structure
+
+```
+dent-bot/
+├── 📂 backend/                 # FastAPI application
+│   ├── 📂 app/                # Main application code
+│   ├── 📄 Dockerfile          # Development Docker image
+│   ├── 📄 Dockerfile.prod     # Production Docker image
+│   └── 📄 requirements.txt    # Python dependencies
+├── 📂 db/                     # Database initialization
+├── 📂 docker/                 # Docker configurations
+│   ├── 📄 docker-compose.dev.yml   # Development setup
+│   └── 📄 docker-compose.prod.yml  # Production setup
+├── 📂 scripts/               # Deployment scripts
+├── 📄 nginx.dev.conf         # Nginx development config
+├── 📄 nginx.prod.conf        # Nginx production config
+├── 📄 .env.dev               # Development environment
+└── 📄 .env.prod              # Production environment
+```
+
+## ⚙️ Configuration
+
+### Environment Files
+
+- **`.env.dev`**: Development settings (HTTP, debug mode, relaxed security)
+- **`.env.prod`**: Production settings (HTTPS, optimized, secure)
+
+### Key Environment Variables
+
+| Variable            | Development             | Production                       | Description          |
+| ------------------- | ----------------------- | -------------------------------- | -------------------- |
+| `WEBAPP_URL`        | `http://localhost:8000` | `https://stom.muhammadqodir.com` | Application base URL |
+| `DEBUG`             | `true`                  | `false`                          | Debug mode           |
+| `POSTGRES_PASSWORD` | `dev_password_123`      | `strong_password`                | Database password    |
+| `SECRET_KEY`        | `dev_key`               | `32_char_secure_key`             | JWT secret key       |
+
+## 🔧 Management Commands
+
+### Development
+
+```bash
+# Start development environment
+./scripts/dev-start.sh
+
+# View logs
+docker-compose -f docker/docker-compose.dev.yml logs -f
+
+# Stop environment
+docker-compose -f docker/docker-compose.dev.yml down
+```
+
+### Production
+
+```bash
+# Deploy production
+./scripts/prod-deploy.sh
+
+# View logs
+docker-compose -f docker/docker-compose.prod.yml logs -f
+
+# Renew SSL certificates
+./scripts/renew-ssl.sh
+
+# Stop production
+docker-compose -f docker/docker-compose.prod.yml down
+```
+
+## 🔒 Security Features
+
+### Production Security
+
+- 🔐 HTTPS with Let's Encrypt SSL
+- 🛡️ Security headers (XSS, CSRF protection)
+- ⚡ Rate limiting
+- 🔄 Automated SSL renewal
+- 👤 Non-root container users
+- 🚫 Debug mode disabled
+
+### Development Security
+
+- 🔓 HTTP only (no SSL complexity)
+- 🐛 Debug mode enabled
+- 🔍 Verbose logging
+- ⏱️ No rate limiting
+- 🔄 Hot reloading
+
+## 📊 Monitoring & Logs
+
+### Log Locations
+
+- **Nginx**: `/var/log/nginx/` (in container)
+- **Backend**: `/app/logs/` (in container)
+- **Database**: Docker logs
+
+### Health Checks
+
+- **Backend**: `/health` endpoint
+- **Database**: PostgreSQL `pg_isready`
+- **Nginx**: `/nginx-health` endpoint
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/new-feature`)
+3. Commit changes (`git commit -am 'Add new feature'`)
+4. Push to branch (`git push origin feature/new-feature`)
+5. Create Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📞 Support
 
-Muammolar yoki savolllar uchun:
-- Issues: GitHub Issues
-- Email: support@stomclinic.uz
-- Telegram: @your_support_bot
+- 🐛 **Issues**: [GitHub Issues](https://github.com/muhammadkodir-alijonov/dent-bot/issues)
+- 📧 **Email**: alijonov@domain.com
+- 💬 **Telegram**: @muhammadkodir_alijonov
 
-## 📝 License
+## 🏥 About
 
-MIT License - batafsil ma'lumot `LICENSE` faylida.
+Professional dental clinic management system designed for modern dental practices. Streamline your patient management, appointments, and communication with integrated Telegram bot functionality.
 
 ---
 
-**© 2024 Stomatologiya Klinikasi. Barcha huquqlar himoyalangan.**
+**Made with ❤️ for dental professionals**

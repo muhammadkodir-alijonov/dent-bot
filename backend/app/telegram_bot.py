@@ -2,25 +2,45 @@ import asyncio
 import logging
 import os
 import ssl
-import aiohttp
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters import CommandStart
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from typing import Optional
 from dotenv import load_dotenv
+
+# Telegram bot import'lari faqat mavjud bo'lsa
+try:
+    from aiogram import Bot, Dispatcher, types
+    from aiogram.filters import CommandStart
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    AIOGRAM_AVAILABLE = True
+except ImportError:
+    AIOGRAM_AVAILABLE = False
+    print("Aiogram kutubxonasi topilmadi, telegram bot ishlamaydi")
 
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-# Bot va Dispatcher yaratish
-bot = Bot(token=BOT_TOKEN)
-dp = Dispatcher()
+# Bot va Dispatcher yaratish (faqat token mavjud bo'lsa)
+bot: Optional[Bot] = None
+dp: Optional[Dispatcher] = None
 
-@dp.message(CommandStart())
-async def start_handler(message: types.Message):
-    """Start komandasi - manzil button bilan"""
-    
-    welcome_text = """
+if AIOGRAM_AVAILABLE and BOT_TOKEN and BOT_TOKEN != "your-telegram-bot-token-here":
+    try:
+        bot = Bot(token=BOT_TOKEN)
+        dp = Dispatcher()
+        print("Telegram bot muvaffaqiyatli yaratildi")
+    except Exception as e:
+        print(f"Telegram bot yaratishda xatolik: {e}")
+        bot = None
+        dp = None
+else:
+    print("Telegram bot tokeni topilmadi yoki aiogram o'rnatilmagan")
+
+# Botni faqat mavjud bo'lganda sozlash
+if bot and dp:
+    @dp.message(CommandStart())
+    async def start_handler(message: types.Message):
+        """Start komandasi - manzil button bilan"""
+        welcome_text = """
 🦷 **Stomatologiya Klinikamizga xush kelibsiz!**
 
 Bizning xizmatlar:
@@ -34,23 +54,23 @@ Bizning xizmatlar:
 📍 **Manzil:** Namangan, Xo'jand qishlog'i
 
 Quyidagi tugma orqali bizning manzilimizni ko'rishingiz mumkin:
-    """
-    
-    # Inline keyboard yaratish
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(
-                text="📍 Klinika manzili", 
-                url="https://maps.app.goo.gl/PXf3WKvqqwngj4PA6"
-            )
-        ]
-    ])
-    
-    await message.answer(
-        welcome_text,
-        parse_mode="Markdown",
-        reply_markup=keyboard
-    )
+        """
+        
+        # Inline keyboard yaratish
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="📍 Klinika manzili", 
+                    url="https://maps.app.goo.gl/PXf3WKvqqwngj4PA6"
+                )
+            ]
+        ])
+        
+        await message.answer(
+            welcome_text,
+            parse_mode="Markdown",
+            reply_markup=keyboard
+        )
 
 @dp.message()
 async def all_messages_handler(message: types.Message):

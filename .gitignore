@@ -1,3 +1,13 @@
+# Environment files (ignore real env files but keep examples)
+.env
+.env.local
+.env.dev
+.env.prod
+.env.*.local
+
+# Keep example files (these should be in git)
+!.env.*.example
+
 # Python
 __pycache__/
 *.py[cod]

@@ -9,7 +9,16 @@ import os
 from dotenv import load_dotenv
 
 from . import crud, schemas, database
-from .telegram_bot import setup_bot
+
+# Telegram bot import'i ixtiyoriy
+try:
+    from .telegram_bot import setup_bot, get_bot_info
+    TELEGRAM_BOT_AVAILABLE = True
+except Exception as e:
+    print(f"Telegram bot yuklanmadi: {e}")
+    TELEGRAM_BOT_AVAILABLE = False
+    setup_bot = None
+    get_bot_info = lambda: {"available": False}
 
 load_dotenv()
 
@@ -75,13 +84,16 @@ async def startup_event():
     finally:
         db.close()
     
-    # Bot setup
-    try:
-        await setup_bot()
-        print("Telegram bot setup completed!")
-    except Exception as e:
-        print(f"Bot setup error: {e}")
-        print("Bot ishlamasa ham web app ishlaydi!")
+    # Bot setup (ixtiyoriy)
+    if TELEGRAM_BOT_AVAILABLE and setup_bot:
+        try:
+            await setup_bot()
+            print("Telegram bot setup completed!")
+        except Exception as e:
+            print(f"Bot setup error: {e}")
+            print("Bot ishlamasa ham web app ishlaydi!")
+    else:
+        print("Telegram bot mavjud emas, faqat web app ishlaydi")
 
 # Webhook endpoint for Telegram bot (production uchun)
 @app.post("/webhook")
