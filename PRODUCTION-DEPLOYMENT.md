@@ -185,7 +185,107 @@ docker-compose --env-file .env.prod -f docker-compose.prod.yml ps
 
 # Disk usage
 df -h
+# Production Deployment Guide (Step-by-Step)
+
+## 1. Server tayyorlash
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git curl
+# Docker o'rnatish
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+# Docker Compose o'rnatish
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+newgrp docker
+```
+
+## 2. Loyihani klonlash
+
+```bash
+git clone https://github.com/muhammadkodir-alijonov/dent-bot.git
+cd dent-bot
+```
+
+## 3. Environment sozlash
+
+```bash
+cp .env.prod.example .env.prod
+nano .env.prod
+# (parollar, tokenlar, domen va emailni to'ldiring)
+```
+
+## 4. Docker Compose orqali ishga tushirish
+
+```bash
+docker-compose --env-file .env.prod -f docker-compose.prod.yml up -d --build
+```
+
+## 5. SSL sertifikat o'rnatish (Let's Encrypt)
+
+1. Nginx konteyneri to'liq ishga tushganini tekshiring:
+    ```bash
+    docker-compose --env-file .env.prod -f docker-compose.prod.yml ps
+    ```
+2. Certbot orqali SSL oling:
+    ```bash
+    docker-compose --env-file .env.prod -f docker-compose.prod.yml exec nginx \
+      certbot --nginx --non-interactive --agree-tos \
+      --email YOUR_EMAIL -d stom.muhammadqodir.com
+    ```
+3. Nginx konteynerini qayta ishga tushiring:
+    ```bash
+    docker-compose --env-file .env.prod -f docker-compose.prod.yml restart nginx
+    ```
+
+## 6. SSL auto-renewal (har 30 kunda yangilash)
+
+```bash
+crontab -e
+# Pastga qo'shing:
+0 3 */30 * * /home/$USER/dent-bot/scripts/ssl-renew.sh
+```
+
+## 7. Monitoring va servislarni boshqarish
+
+```bash
+# Loglar
+docker-compose --env-file .env.prod -f docker-compose.prod.yml logs -f
+# Servis status
+docker-compose --env-file .env.prod -f docker-compose.prod.yml ps
+# To'xtatish/ishga tushirish
+docker-compose --env-file .env.prod -f docker-compose.prod.yml down
+docker-compose --env-file .env.prod -f docker-compose.prod.yml up -d
+```
+
+## 8. Foydali buyruqlar
+
+```bash
+# Barcha konteynerlarni ko'rish
+docker ps -a
+# Disk usage
+df -h
 docker system df
+# Docker volume va image tozalash
+docker system prune -f --volumes
+```
+
+## 9. Muammolar va troubleshooting
+
+- Nginx yoki backend loglarini tekshiring
+- Portlar band bo'lsa: `sudo lsof -i :80` yoki `sudo lsof -i :443`
+- SSL xatoliklari: sertifikat yo'li va domen nomini tekshiring
+- Database xatolari: `docker-compose ... logs db`
+
+## 10. Asosiy URLlar
+
+- https://stom.muhammadqodir.com
+- https://stom.muhammadqodir.com/admin
+- https://stom.muhammadqodir.com/docs
+
+---
 ```
 
 ### Health Checks
