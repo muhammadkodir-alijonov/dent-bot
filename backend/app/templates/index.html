@@ -1,230 +1,233 @@
-{% extends "base.html" %}
-
-{% block title %}
-Stomatologiya Klinikasi - {% if selected_category %}{{ selected_category.name }}{% elif search_query %}{{ search_query }} qidiruvi{% else %}Barcha xizmatlar{% endif %}
-{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %} Stomatologiya Klinikasi - {% if
+selected_category %}{{ selected_category.name }}{% elif search_query %}{{
+search_query }} qidiruvi{% else %}Barcha xizmatlar{% endif %} {% endblock %} {%
+block content %}
 <div class="container-fluid px-3">
-    <!-- Welcome Section -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="text-center mb-4">
-                <h1 class="display-4">
-                    <i class="fas fa-tooth text-primary me-3"></i>
-                    Sog'lom tabassum
-                </h1>
-                <p class="lead text-muted">Professional stomatologiya xizmatlari</p>
-            </div>
-        </div>
+  <!-- Welcome Section -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="text-center mb-4">
+        <h1 class="display-4">
+          <i class="fas fa-tooth text-primary me-3"></i>
+          Sog'lom tabassum
+        </h1>
+        <p class="lead text-muted">Professional stomatologiya xizmatlari</p>
+      </div>
     </div>
+  </div>
 
-    <!-- Search Section -->
-    <div class="row">
-        <div class="col-12">
-            <div class="search-container">
-                <form id="searchForm" method="GET" action="/search">
-                    <div class="row align-items-center">
-                        <div class="col-md-10">
-                            <input 
-                                type="text" 
-                                name="q" 
-                                id="searchInput"
-                                class="form-control search-input" 
-                                placeholder="🔍 Xizmat nomi bo'yicha qidiring..."
-                                value="{{ search_query or '' }}"
-                            >
-                        </div>
-                        <div class="col-md-2 mt-2 mt-md-0">
-                            <button type="submit" class="btn btn-search w-100">
-                                <i class="fas fa-search me-2"></i>Qidirish
-                            </button>
-                        </div>
-                    </div>
-                </form>
+  <!-- Search Section -->
+  <div class="row">
+    <div class="col-12">
+      <div class="search-container">
+        <form id="searchForm" method="GET" action="/search">
+          <div class="row align-items-center">
+            <div class="col-md-10">
+              <input
+                type="text"
+                name="q"
+                id="searchInput"
+                class="form-control search-input"
+                placeholder="🔍 Xizmat nomi bo'yicha qidiring..."
+                value="{{ search_query or '' }}"
+              />
             </div>
-        </div>
+            <div class="col-md-2 mt-2 mt-md-0">
+              <button type="submit" class="btn btn-search w-100">
+                <i class="fas fa-search me-2"></i>Qidirish
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 
-    <!-- Category Filters -->
-    <div class="row">
-        <div class="col-12">
-            <div class="category-filters">
-                <h5 class="mb-3">
-                    <i class="fas fa-filter me-2"></i>Bo'limlar:
-                </h5>
-                <div class="d-flex flex-wrap">
-                    <a href="/" class="category-btn {% if not selected_category %}active{% endif %}">
-                        <i class="fas fa-th-large me-1"></i>Barchasi
-                    </a>
-                    {% for category in categories %}
-                    <a href="/category/{{ category.id }}" 
-                       class="category-btn {% if selected_category and selected_category.id == category.id %}active{% endif %}">
-                        {% if category.name == 'Plomba' %}
-                            <i class="fas fa-tooth me-1"></i>
-                        {% elif category.name == 'Karonka' %}
-                            <i class="fas fa-crown me-1"></i>
-                        {% elif category.name == 'Implant' %}
-                            <i class="fas fa-plus-circle me-1"></i>
-                        {% elif category.name == 'Ortodontiya' %}
-                            <i class="fas fa-smile me-1"></i>
-                        {% else %}
-                            <i class="fas fa-stethoscope me-1"></i>
-                        {% endif %}
-                        {{ category.name }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
+  <!-- Category Filters -->
+  <div class="row">
+    <div class="col-12">
+      <div class="category-filters">
+        <h5 class="mb-3"><i class="fas fa-filter me-2"></i>Bo'limlar:</h5>
+        <div class="d-flex flex-wrap">
+          <a
+            href="/"
+            class="category-btn {% if not selected_category %}active{% endif %}"
+          >
+            <i class="fas fa-th-large me-1"></i>Barchasi
+          </a>
+          {% for category in categories %}
+          <a
+            href="/category/{{ category.id }}"
+            class="category-btn {% if selected_category and selected_category.id == category.id %}active{% endif %}"
+          >
+            {% if category.name == 'Plomba' %}
+            <i class="fas fa-tooth me-1"></i>
+            {% elif category.name == 'Karonka' %}
+            <i class="fas fa-crown me-1"></i>
+            {% elif category.name == 'Implant' %}
+            <i class="fas fa-plus-circle me-1"></i>
+            {% elif category.name == 'Ortodontiya' %}
+            <i class="fas fa-smile me-1"></i>
+            {% else %}
+            <i class="fas fa-stethoscope me-1"></i>
+            {% endif %} {{ category.name }}
+          </a>
+          {% endfor %}
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Results Header -->
-    {% if search_query or selected_category %}
-    <div class="row">
-        <div class="col-12">
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i>
-                {% if search_query %}
-                    <strong>{{ items|length }}</strong> natija topildi: "<strong>{{ search_query }}</strong>"
-                {% elif selected_category %}
-                    <strong>{{ selected_category.name }}</strong> bo'limi: <strong>{{ items|length }}</strong> xizmat
-                {% endif %}
-            </div>
-        </div>
+  <!-- Results Header -->
+  {% if search_query or selected_category %}
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        {% if search_query %}
+        <strong>{{ items|length }}</strong> natija topildi: "<strong
+          >{{ search_query }}</strong
+        >" {% elif selected_category %}
+        <strong>{{ selected_category.name }}</strong> bo'limi:
+        <strong>{{ items|length }}</strong> xizmat {% endif %}
+      </div>
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 
-    <!-- Items Grid -->
-    <div class="row" id="itemsContainer">
-        {% if items %}
-            {% for item in items %}
-            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 mb-3">
-                <div class="card item-card h-100">
-                    {% if item.image_url %}
-                        <img src="{{ base_url }}{{ item.image_url }}" class="item-image" alt="{{ item.name }}" loading="lazy">
-                    {% else %}
-                        <div class="item-placeholder">
-                            {% if item.category.name == 'Plomba' %}
-                                <i class="fas fa-tooth"></i>
-                            {% elif item.category.name == 'Karonka' %}
-                                <i class="fas fa-crown"></i>
-                            {% elif item.category.name == 'Implant' %}
-                                <i class="fas fa-plus-circle"></i>
-                            {% elif item.category.name == 'Ortodontiya' %}
-                                <i class="fas fa-smile"></i>
-                            {% else %}
-                                <i class="fas fa-stethoscope"></i>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                    
-                    <div class="card-body item-card-body">
-                        <h5 class="item-title">{{ item.name }}</h5>
-                        
-                        <div class="item-price">
-                            {{ "{:,}".format(item.price).replace(",", " ") }} So'm
-                        </div>
-                        
-                        <p class="item-description">{{ item.description[:30] }}{% if item.description|length > 30 %}...{% endif %}</p>
-                        
-                        <div class="mt-auto">
-                            <a href="/item/{{ item.id }}" class="btn btn-details w-100">
-                                Ko'rish
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+  <!-- Items Grid -->
+  <div class="row" id="itemsContainer">
+    {% if items %} {% for item in items %}
+    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 mb-3">
+      <div class="card item-card h-100">
+        {% if item.image_url %}
+        <img
+          src="{{ base_url }}{{ item.image_url }}"
+          class="item-image"
+          alt="{{ item.name }}"
+          loading="lazy"
+        />
         {% else %}
-            <div class="col-12">
-                <div class="text-center py-5">
-                    <i class="fas fa-search fa-5x text-muted mb-4"></i>
-                    <h3 class="text-muted">
-                        {% if search_query %}
-                            Hech narsa topilmadi
-                        {% else %}
-                            Xizmatlar mavjud emas
-                        {% endif %}
-                    </h3>
-                    <p class="text-muted">
-                        {% if search_query %}
-                            Boshqa kalit so'zlar bilan qidiring yoki barcha xizmatlarni ko'ring
-                        {% else %}
-                            Tez orada yangi xizmatlar qo'shiladi
-                        {% endif %}
-                    </p>
-                    {% if search_query %}
-                    <a href="/" class="btn btn-primary">
-                        <i class="fas fa-arrow-left me-2"></i>Barcha xizmatlar
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-        {% endif %}
-    </div>
-
-    <!-- Call to Action -->
-    {% if items %}
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="text-center bg-primary text-white p-4 rounded-3">
-                <h4><i class="fas fa-phone me-2"></i>Savollaringiz bormi?</h4>
-                <p class="mb-3">Mutaxassislarimiz bilan bog'laning</p>
-                <div class="d-flex justify-content-center flex-wrap gap-3">
-                    <a href="tel:+998901234567" class="btn btn-light btn-lg">
-                        <i class="fas fa-phone me-2"></i>+998 99 492 83 85
-                    </a>
-                    <a href="https://t.me/flaskloginbot" class="btn btn-outline-light btn-lg" target="_blank">
-                        <i class="fab fa-telegram me-2"></i>Telegram bot
-                    </a>
-                </div>
-            </div>
+        <div class="item-placeholder">
+          {% if item.category.name == 'Plomba' %}
+          <i class="fas fa-tooth"></i>
+          {% elif item.category.name == 'Karonka' %}
+          <i class="fas fa-crown"></i>
+          {% elif item.category.name == 'Implant' %}
+          <i class="fas fa-plus-circle"></i>
+          {% elif item.category.name == 'Ortodontiya' %}
+          <i class="fas fa-smile"></i>
+          {% else %}
+          <i class="fas fa-stethoscope"></i>
+          {% endif %}
         </div>
+        {% endif %}
+
+        <div class="card-body item-card-body">
+          <h5 class="item-title">{{ item.name }}</h5>
+
+          <div class="item-price">
+            {{ "{:,}".format(item.price).replace(",", " ") }} So'm
+          </div>
+
+          <p class="item-description">
+            {{ item.description[:30] }}{% if item.description|length > 30
+            %}...{% endif %}
+          </p>
+
+          <div class="mt-auto">
+            <a href="/item/{{ item.id }}" class="btn btn-details w-100">
+              Ko'rish
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="col-12">
+      <div class="text-center py-5">
+        <i class="fas fa-search fa-5x text-muted mb-4"></i>
+        <h3 class="text-muted">
+          {% if search_query %} Hech narsa topilmadi {% else %} Xizmatlar mavjud
+          emas {% endif %}
+        </h3>
+        <p class="text-muted">
+          {% if search_query %} Boshqa kalit so'zlar bilan qidiring yoki barcha
+          xizmatlarni ko'ring {% else %} Tez orada yangi xizmatlar qo'shiladi {%
+          endif %}
+        </p>
+        {% if search_query %}
+        <a href="/" class="btn btn-primary">
+          <i class="fas fa-arrow-left me-2"></i>Barcha xizmatlar
+        </a>
+        {% endif %}
+      </div>
     </div>
     {% endif %}
+  </div>
+
+  <!-- Call to Action -->
+  {% if items %}
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="text-center bg-primary text-white p-4 rounded-3">
+        <h4><i class="fas fa-phone me-2"></i>Savollaringiz bormi?</h4>
+        <p class="mb-3">Mutaxassislarimiz bilan bog'laning</p>
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+          <a href="tel:+998901234567" class="btn btn-light btn-lg">
+            <i class="fas fa-phone me-2"></i>+998 99 492 83 85
+          </a>
+          <a
+            href="https://t.me/stomjbot"
+            class="btn btn-outline-light btn-lg"
+            target="_blank"
+          >
+            <i class="fab fa-telegram me-2"></i>Telegram bot
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
 <!-- Services anchor for navigation -->
-<div id="services" style="height: 1px;"></div>
-{% endblock %}
-
-{% block extra_scripts %}
+<div id="services" style="height: 1px"></div>
+{% endblock %} {% block extra_scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener("DOMContentLoaded", function () {
     // Telegram Web App specific adjustments
     if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-        
-        // Handle main button for booking
-        tg.MainButton.setText('Qo\'ng\'iroq qilish');
-        tg.MainButton.color = '#2c5aa0';
-        tg.MainButton.textColor = '#ffffff';
-        
-        tg.MainButton.onClick(() => {
-            tg.openLink('tel:+998901234567');
-        });
-        
-        // Show main button only on main page
-        if (window.location.pathname === '/') {
-            tg.MainButton.show();
-        }
+      const tg = window.Telegram.WebApp;
+
+      // Handle main button for booking
+      tg.MainButton.setText("Qo'ng'iroq qilish");
+      tg.MainButton.color = "#2c5aa0";
+      tg.MainButton.textColor = "#ffffff";
+
+      tg.MainButton.onClick(() => {
+        tg.openLink("tel:+998901234567");
+      });
+
+      // Show main button only on main page
+      if (window.location.pathname === "/") {
+        tg.MainButton.show();
+      }
     }
-    
+
     // Enhanced search functionality
-    const searchInput = document.getElementById('searchInput');
+    const searchInput = document.getElementById("searchInput");
     if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const query = this.value.trim();
-            if (query.length >= 2) {
-                // Add visual feedback
-                this.style.borderColor = '#17a2b8';
-            } else {
-                this.style.borderColor = '#2c5aa0';
-            }
-        });
+      searchInput.addEventListener("input", function () {
+        const query = this.value.trim();
+        if (query.length >= 2) {
+          // Add visual feedback
+          this.style.borderColor = "#17a2b8";
+        } else {
+          this.style.borderColor = "#2c5aa0";
+        }
+      });
     }
-});
+  });
 </script>
 {% endblock %}
