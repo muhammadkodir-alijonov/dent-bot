@@ -60,11 +60,6 @@ Thumbs.db
 *.log
 logs/
 
-# Upload files
-backend/app/static/images/uploads/
-backend/app/static/images/*.jpg
-backend/app/static/images/*.png
-backend/app/static/images/*.gif
 
 # Temporary files
 tmp/
