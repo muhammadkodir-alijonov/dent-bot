@@ -62,20 +62,6 @@ services:
         "debug",
       ]
 
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
-      - ./backend/app/static:/app/static:ro
-      - backend_uploads_dev:/app/uploads:ro
-    depends_on:
-      - backend
-    networks:
-      - dental_network
-    restart: unless-stopped
-
 volumes:
   postgres_data_dev:
   backend_uploads_dev:

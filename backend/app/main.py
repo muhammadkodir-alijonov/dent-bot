@@ -115,6 +115,11 @@ def get_db():
     finally:
         db.close()
 
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "message": "Dental clinic API is running"}
+
 # Ngrok skip redirect
 @app.get("/")
 async def home_redirect(request: Request, db: Session = Depends(get_db), ngrok_skip_browser_warning: str = None):

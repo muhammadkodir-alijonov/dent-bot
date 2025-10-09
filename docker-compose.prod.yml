@@ -67,47 +67,6 @@ services:
       timeout: 10s
       retries: 3
 
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "8080:80"
-      - "8443:443"
-    volumes:
-      - ./nginx.prod.conf:/etc/nginx/nginx.conf:ro
-      - ./backend/app/static:/app/static:ro
-      - backend_uploads_prod:/app/uploads:ro
-      - nginx_logs:/var/log/nginx
-    depends_on:
-      - backend
-    networks:
-      - dental_network
-    restart: always
-    deploy:
-      resources:
-        limits:
-          memory: 128M
-        reservations:
-          memory: 64M
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - certbot_data:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
-    command: certonly --webroot --webroot-path=/var/www/certbot --email ${LETSENCRYPT_EMAIL} --agree-tos --no-eff-email -d stom.muhammadqodir.com
-    profiles:
-      - ssl-setup
-
-  # SSL renewal service
-  certbot-renew:
-    image: certbot/certbot
-    volumes:
-      - certbot_data:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
-    command: renew --webroot --webroot-path=/var/www/certbot
-    profiles:
-      - ssl-renew
-
 volumes:
   postgres_data_prod:
   backend_uploads_prod:
