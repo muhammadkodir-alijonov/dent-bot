@@ -63,12 +63,6 @@ Quyidagi tugma orqali bizning manzilimizni ko'rishingiz mumkin:
                     text="📍 Klinika manzili", 
                     url="https://maps.app.goo.gl/PXf3WKvqqwngj4PA6"
                 )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="📞 Telefon raqam", 
-                    callback_data="phone_number"
-                )
             ]
         ])
         
@@ -145,12 +139,6 @@ Quyidagi tugma orqali bizning manzilimizni ko'rishingiz mumkin:
             InlineKeyboardButton(
                 text="📍 Klinika manzili", 
                 url="https://maps.app.goo.gl/PXf3WKvqqwngj4PA6"
-            )
-        ],
-        [
-            InlineKeyboardButton(
-                text="📞 Telefon raqam", 
-                callback_data="phone_number"
             )
         ]
     ])
