@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 try:
     from aiogram import Bot, Dispatcher, types
     from aiogram.filters import CommandStart
-    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
     AIOGRAM_AVAILABLE = True
 except ImportError:
     AIOGRAM_AVAILABLE = False
@@ -63,8 +63,28 @@ Quyidagi tugma orqali bizning manzilimizni ko'rishingiz mumkin:
                     text="📍 Klinika manzili", 
                     url="https://maps.app.goo.gl/PXf3WKvqqwngj4PA6"
                 )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="📞 Telefon raqam", 
+                    callback_data="phone_number"
+                )
             ]
         ])
+        
+        # Reply keyboard ham qo'shamiz
+        reply_keyboard = ReplyKeyboardMarkup(
+            keyboard=[
+                [
+                    KeyboardButton(text="📞 Telefon raqam")
+                ],
+                [
+                    KeyboardButton(text="📍 Manzil")
+                ]
+            ],
+            resize_keyboard=True,
+            one_time_keyboard=False
+        )
         
         await message.answer(
             welcome_text,
@@ -74,7 +94,35 @@ Quyidagi tugma orqali bizning manzilimizni ko'rishingiz mumkin:
 
 @dp.message()
 async def all_messages_handler(message: types.Message):
-    """Barcha xabarlarga manzil button bilan javob"""
+    """Barcha xabarlarga javob - text message'lar uchun"""
+    
+    # Agar "Telefon raqam" tugmasi bosilsa
+    if message.text == "📞 Telefon raqam":
+        phone_text = """
+📞 **Bizning kontakt ma'lumotlarimiz:**
+
+**Telefon:** +998994928385
+**Telegram:** @stom_namangan
+
+Bu raqamni nusxalab, telefon ilovasida qo'ng'iroq qilishingiz mumkin.
+        """
+        await message.answer(phone_text, parse_mode="Markdown")
+        return
+    
+    # Agar "Manzil" tugmasi bosilsa  
+    if message.text == "📍 Manzil":
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="📍 Klinika manzili", 
+                    url="https://maps.app.goo.gl/PXf3WKvqqwngj4PA6"
+                )
+            ]
+        ])
+        await message.answer("Bizning manzilimiz:", reply_markup=keyboard)
+        return
+    
+    # Boshqa barcha message'larga standart javob"""
     welcome_text = """
 🦷 **Stomatologiya Klinikamizga xush kelibsiz!**
 
@@ -98,6 +146,12 @@ Quyidagi tugma orqali bizning manzilimizni ko'rishingiz mumkin:
                 text="📍 Klinika manzili", 
                 url="https://maps.app.goo.gl/PXf3WKvqqwngj4PA6"
             )
+        ],
+        [
+            InlineKeyboardButton(
+                text="📞 Telefon raqam", 
+                callback_data="phone_number"
+            )
         ]
     ])
     
@@ -110,6 +164,23 @@ Quyidagi tugma orqali bizning manzilimizni ko'rishingiz mumkin:
     except Exception as e:
         logging.error(f"Message handler error: {e}")
         await message.answer("Xatolik yuz berdi")
+
+# Callback handler qo'shish kerak
+if bot and dp:
+    @dp.callback_query()
+    async def callback_handler(callback: types.CallbackQuery):
+        """Callback tugmalari uchun handler"""
+        if callback.data == "phone_number":
+            phone_text = """
+📞 **Bizning kontakt ma'lumotlarimiz:**
+
+**Telefon:** +998994928385
+**Telegram:** @stom_namangan
+
+Bu raqamni nusxalab, telefon ilovasida qo'ng'iroq qilishingiz mumkin.
+            """
+            await callback.message.answer(phone_text, parse_mode="Markdown")
+            await callback.answer("Telefon raqam ko'rsatildi")
 
 async def get_bot_info():
     """Bot ma'lumotlarini olish"""
